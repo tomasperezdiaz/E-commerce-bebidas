@@ -1,3 +1,4 @@
+
 let productosCarritos = localStorage.getItem("producto-carrito");
 productosCarritos = JSON.parse(productosCarritos);
 
@@ -8,6 +9,7 @@ const carritoCompra = document.querySelector("#carrito-compra");
 let botonesEliminar = document.querySelectorAll(".carrito-producto-eliminar");
 const borrarTodo = document.querySelector("#carrito-accion-vaciar");
 const total = document.querySelector("#total");
+const btnComprar = document.querySelector("#btn-compra");
 function productosCar() {
   if (productosCarritos && productosCarritos.length > 0) {
     carritoVacio.classList.add("disabled");
@@ -84,7 +86,7 @@ function borrar(e) {
 
   localStorage.setItem("producto-carrito", JSON.stringify(productosCarritos));
 }
-debugger;
+
 borrarTodo.addEventListener("click", borrarTodos);
 function borrarTodos() {
   productosCarritos.length = 0;
@@ -98,4 +100,18 @@ function totale() {
     0
   );
   total.innerText = `$${totalSuma}`;
+}
+
+
+
+btnComprar.addEventListener("click", compraCarrito)
+function compraCarrito() {
+  Toastify({
+    text: "Gracias por tu compra",
+    className: "info",
+    style: {
+      background: "orange",
+    }
+  }).showToast();
+  borrarTodos();
 }

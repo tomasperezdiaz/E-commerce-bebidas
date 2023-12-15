@@ -1,120 +1,29 @@
-const productos = [
-  //Cervezas
-  {
-    id: "cerveza-ipa",
-    titulo: "Cerveza IPA",
-    img: "./img/cervezaIpa.jpg",
-    categoria: { id: "cerveza", nombre: "Cerveza" },
-    precio: 500,
-  },
-  {
-    id: "cerveza-rubia",
-    titulo: "Cerveza rubia",
-    img: "./img/cervezaRubia.jpg",
-    categoria: { id: "cerveza", nombre: "Cerveza" },
-    precio: 520,
-  },
-  {
-    id: "cerveza-roja",
-    titulo: "Cerveza roja",
-    img: "./img/cervezaRoja.jpg",
-    categoria: { id: "cerveza", nombre: "Cerveza" },
-    precio: 550,
-  },
-  {
-    id: "cerveza-negra",
-    titulo: "Cerveza negra",
-    img: "./img/cervezaNegra.jpg",
-    categoria: { id: "cerveza", nombre: "Cerveza" },
-    precio: 600,
-  },
-  //Vinos
-  {
-    id: "vino-malbec",
-    titulo: "Vino Malbec",
-    img: "./img/vinoMalbec.jpg",
-    categoria: { id: "vino", nombre: "Vino" },
-    precio: 1000,
-  },
-  {
-    id: "vino-toro",
-    titulo: "Vino Toro",
-    img: "./img/vinoToro.jpg",
-    categoria: { id: "vino", nombre: "Vino" },
-    precio: 330,
-  },
-  {
-    id: "vino-trapiche",
-    titulo: "Vino Trapiche",
-    img: "./img/vinoTrapiche.jpg",
-    categoria: { id: "vino", nombre: "Vino" },
-    precio: 990,
-  },
-  {
-    id: "vino-ysefue ",
-    titulo: "Vino Ysefue",
-    img: "./img/vinoSeFue.jpg",
-    categoria: { id: "vino", nombre: "Vino" },
-    precio: 1200,
-  },
-  {
-    id: "vino-malbec-especial",
-    titulo: "Vino Malbec Especial",
-    img: "./img/vinoMalvecEspecial.jpg",
-    categoria: { id: "vino", nombre: "Vino" },
-    precio: 1500,
-  },
-  {
-    id: "vino-toro-premium",
-    titulo: "Vino Premium",
-    img: "./img/vinoToroPremium.jpg",
-    categoria: { id: "vino", nombre: "Vino" },
-    precio: 340,
-  },
-  {
-    id: "vino-trapiche-export",
-    titulo: "Vino Trapiche Export",
-    img: "./img/vinoTrapicheExport.jpg",
-    categoria: { id: "vino", nombre: "Vino" },
-    precio: 1220,
-  },
-  {
-    id: "vino-sefue-yvolvio ",
-    titulo: "Vino Sefue Yvolvio",
-    img: "./img/vinoSeFueyVolvio.jpg",
-    categoria: { id: "vino", nombre: "Vino" },
-    precio: 12000,
-  },
-  //Bebidas Blancas
-  {
-    id: "fernet-branca",
-    titulo: "Fernet Branca",
-    img: "./img/fernet.jpg",
-    categoria: { id: "bebida-blanca", nombre: "Bebida Blanca" },
-    precio: 10200,
-  },
-  {
-    id: "vodka",
-    titulo: "Vodka",
-    img: "./img/vodka.jpg",
-    categoria: { id: "bebida-blanca", nombre: "Bebida Blanca" },
-    precio: 3340,
-  },
-  {
-    id: "tequilla",
-    titulo: "Tequilla",
-    img: "./img/tequilla.jpg",
-    categoria: { id: "bebida-blanca", nombre: "Bebida Blanca" },
-    precio: 9290,
-  },
-  {
-    id: "ron",
-    titulo: "Ron",
-    img: "./img/ron.jpg",
-    categoria: { id: "bebida-blanca", nombre: "Bebida Blanca" },
-    precio: 12030,
-  },
-];
+let productos = [];
+
+function obtenerInfo() {
+  return new Promise((resolve, reject) => {
+    fetch("../JSON/productos.json")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error al cargar la API");
+        }
+        return response.json();
+      })
+      .then((data) => resolve(data))
+      .catch((error) => reject(error));
+  });
+}
+
+async function main() {
+  try {
+    productos = await obtenerInfo(); // Elimina "const" para que se asigne a la variable global
+    cargarProductos(productos);
+  } catch (error) {
+    console.error("Error en la app", error);
+  }
+}
+
+main();
 
 const contenedorProductos = document.querySelector("#contenedor-productos");
 const botonesCategorias = document.querySelectorAll(".btn-men");
@@ -123,7 +32,7 @@ let botonesAgregar = document.querySelectorAll(".producto-agregar");
 const numero = document.querySelector("#numero");
 
 function cargarProductos(productosElegidos) {
-  contenedorProductos.innerHTML = "";
+  contenedorProductos.innerHTML = " ";
   productosElegidos.map((producto) => {
     const div = document.createElement("div");
     div.classList.add("producto");
@@ -139,8 +48,6 @@ function cargarProductos(productosElegidos) {
   });
   actualizarBtn();
 }
-
-cargarProductos(productos);
 
 botonesCategorias.forEach((boton) => {
   boton.addEventListener("click", (e) => {
@@ -172,11 +79,10 @@ function actualizarBtn() {
 
 let productosCarrito;
 
-let productosCarritoJS = localStorage.getItem("producto-carrito")
-
+let productosCarritoJS = localStorage.getItem("producto-carrito");
 
 if (productosCarritoJS) {
-  productosCarrito = JSON.parse(productosCarritoJS) ;
+  productosCarrito = JSON.parse(productosCarritoJS);
   actualizarNumero();
 } else {
   productosCarrito = [];
