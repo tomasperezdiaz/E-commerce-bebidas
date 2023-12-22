@@ -114,4 +114,5 @@ function compraCarrito() {
     }
   }).showToast();
   borrarTodos();
+  localStorage.clear();
 }
