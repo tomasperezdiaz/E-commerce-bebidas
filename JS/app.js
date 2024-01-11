@@ -92,15 +92,12 @@ function agregarCarrito(e) {
   const idBtn = e.currentTarget.id;
   const productoAgregado = productos.find((producto) => producto.id === idBtn);
 
-  if (productosCarrito.some((producto) => producto.id === idBtn)) {
-    const index = productosCarrito.findIndex(
-      (producto) => producto.id === idBtn
-    );
-    productosCarrito[index].cantidad++;
-  } else {
-    productoAgregado.cantidad = 1;
-    productosCarrito.push(productoAgregado);
-  }
+  const existeEnCarrito = productosCarrito.some((producto) => producto.id === idBtn);
+
+  existeEnCarrito
+    ? productosCarrito.find((producto) => producto.id === idBtn).cantidad++
+    : (productoAgregado.cantidad = 1, productosCarrito.push(productoAgregado));
+
   actualizarNumero();
 
   localStorage.setItem("producto-carrito", JSON.stringify(productosCarrito));
