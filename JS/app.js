@@ -2,7 +2,7 @@ let productos = [];
 
 function obtenerInfo() {
   return new Promise((resolve, reject) => {
-    fetch("./productos.json")
+    fetch("../JSON/productos.json")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error al cargar la API");
